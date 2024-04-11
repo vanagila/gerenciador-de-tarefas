@@ -31,7 +31,7 @@ export const SignUp: React.FC = () => {
       toast.error(response.message);
     } else {
       toast.success(response.message);
-      navigate("/");
+      navigate("/login");
     }
   };
 
@@ -41,7 +41,7 @@ export const SignUp: React.FC = () => {
         <Title>Crie uma conta</Title>
         <Subtitle>
           Já tem uma conta?
-          <Link to="/"> Faça login</Link>
+          <Link to="/login"> Faça login</Link>
         </Subtitle>
         <form onSubmit={handleSubmit}>
           <div>
