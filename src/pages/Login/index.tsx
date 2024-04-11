@@ -34,7 +34,10 @@ export const Login: React.FC = () => {
       toast.error(response.message);
     } else {
       toast.success(response.message);
-      localStorage.setItem("token", response.data.token ?? "");
+      localStorage.setItem(
+        "token",
+        JSON.stringify(response.data.token || null)
+      );
       navigate("/");
     }
   };
