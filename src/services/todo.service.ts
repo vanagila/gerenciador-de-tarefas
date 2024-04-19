@@ -4,10 +4,10 @@ export const listTodos = async (token: string): Promise<ResponseAPI<[]>> => {
   try {
     const response = await api.get("/todos", {
       headers: {
-        Authorization: token,
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
     });
-    console.log(response);
 
     return {
       code: response.data.code,
