@@ -1,3 +1,5 @@
+import { formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import { HomeContainer, HomeTitle } from "./styled";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +9,7 @@ import { Todo } from "../../components/Todo";
 interface Todo {
   id: string;
   content: string;
-  status: boolean;
+  done: string;
   createdAt: string;
 }
 
@@ -27,11 +29,10 @@ export const Home: React.FC = () => {
     const getTodos = async () => {
       const response = await listTodos(token);
       setTodos(response.data);
-      console.log(response.data);
     };
 
     getTodos();
-  });
+  }, [token]);
 
   return (
     <HomeContainer>
@@ -40,8 +41,10 @@ export const Home: React.FC = () => {
         <Todo
           key={id}
           content={todo.content}
-          status={todo.status}
-          createdAt={todo.createdAt}
+          status={todo.done.toString() !== "true" ? "Incompleta" : "Completa"}
+          createdAt={formatDistanceToNow(new Date(todo.createdAt), {
+            locale: ptBR,
+          })}
         />
       ))}
     </HomeContainer>

@@ -2,7 +2,7 @@ import { TodoContainer, TodoContent, TodoCreatedAt, TodoStatus } from "./style";
 
 interface TodoProps {
   content: string;
-  status: boolean;
+  status: string;
   createdAt: string;
 }
 
@@ -12,7 +12,7 @@ export const Todo: React.FC<TodoProps> = ({ content, status, createdAt }) => {
       <TodoContent>{content}</TodoContent>
       <TodoStatus>Status: {status}</TodoStatus>
       <br />
-      <TodoCreatedAt>Created at: {createdAt}</TodoCreatedAt>
+      <TodoCreatedAt>Criado há {createdAt}</TodoCreatedAt>
     </TodoContainer>
   );
 };

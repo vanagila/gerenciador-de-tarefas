@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Input = styled.input`
+export const Container = styled.input`
   font-family: var(--font-poppins);
   font-size: 14px;
   font-weight: 300;
