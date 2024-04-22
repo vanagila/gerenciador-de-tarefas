@@ -1,14 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../services/user.service";
 import { toast } from "react-toastify";
-import {
-  Button,
-  Container,
-  Input,
-  Label,
-  Subtitle,
-  Title,
-} from "../SignUp/style";
+import { Input } from "../../components/Input";
+import { Title } from "../../components/Title";
+import { Container } from "../../components/Container";
+import { Subtitle } from "../../components/Subtitle";
+import { Button } from "../../components/Button";
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -44,24 +41,14 @@ export const Login: React.FC = () => {
 
   return (
     <Container>
-      <div>
-        <Title>Entre na sua conta</Title>
-        <Subtitle>
-          Não tem uma conta?
-          <Link to="/signup"> Faça seu cadastro</Link>
-        </Subtitle>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <Label>Email:</Label>
-            <Input type="text" name="email" />
-          </div>
-          <div>
-            <Label>Senha:</Label>
-            <Input type="password" name="password" />
-          </div>
-          <Button type="submit">entrar</Button>
-        </form>
-      </div>
+      <Title content="Entre na sua conta" />
+      <Subtitle content=" Não tem uma conta?"></Subtitle>
+      <Link to="/signup"> Faça seu cadastro</Link>
+      <form onSubmit={handleSubmit}>
+        <Input type="text" labelText="Email" inputName="email" />
+        <Input type="password" labelText="Senha" inputName="password" />
+        <Button text="entrar" typeBtn="submit"></Button>
+      </form>
     </Container>
   );
 };
