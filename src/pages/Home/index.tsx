@@ -1,10 +1,11 @@
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useEffect, useState } from "react";
-import { HomeContainer, HomeTitle } from "./styled";
+import { HomeContainer } from "./styled";
 import { useNavigate } from "react-router-dom";
 import { listTodos } from "../../services/todo.service";
 import { Todo } from "../../components/Todo";
+import { Title } from "../../components/Title";
 
 interface Todo {
   id: string;
@@ -36,7 +37,7 @@ export const Home: React.FC = () => {
 
   return (
     <HomeContainer>
-      <HomeTitle>Minhas Tarefas</HomeTitle>
+      <Title content="Minhas tarefas" />
       {todos.map((todo, id) => (
         <Todo
           key={id}
