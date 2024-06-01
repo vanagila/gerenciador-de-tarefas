@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Input } from "../../components/Input";
 import { Title } from "../../components/Title";
 import { Subtitle } from "../../components/Subtitle";
-import { Container } from "../../components/Container/style";
+import { Container } from "../../components/Container";
 import { Button } from "../../components/Button";
 
 export const SignUp: React.FC = () => {

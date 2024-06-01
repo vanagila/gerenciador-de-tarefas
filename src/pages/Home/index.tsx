@@ -1,53 +1,85 @@
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { useEffect, useState } from "react";
-import { HomeContainer } from "./styled";
+import { useContext, useEffect, useState } from "react";
+import { HomeContainer, Form } from "./style";
 import { useNavigate } from "react-router-dom";
-import { listTodos } from "../../services/todo.service";
 import { Todo } from "../../components/Todo";
 import { Title } from "../../components/Title";
-
-interface Todo {
-  id: string;
-  content: string;
-  done: string;
-  createdAt: string;
-}
+import { TodosContext } from "../../providers/Todo";
+import { TodoInput } from "../../components/TodoInput";
+import { TodoButton } from "../../components/TodoButton";
+import { Wrapper } from "../../components/Wrapper";
 
 export const Home: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const { listTodos, todos, createTodo, updateTodoStatus } =
+    useContext(TodosContext);
+  const [newTodoContent, setNewTodoContent] = useState("");
   const navigate = useNavigate();
 
   const token = JSON.parse(localStorage.getItem("token") ?? "false");
 
-  useEffect(() => {
-    if (!token) {
-      return navigate("/signup");
+  const handleCreateTodo = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    try {
+      await createTodo(token, {
+        content: newTodoContent,
+        createdAt: new Date().toISOString(),
+      });
+
+      setNewTodoContent("");
+    } catch (error) {
+      console.error("Erro ao criar novo Todo:", error);
     }
-  });
+  };
 
   useEffect(() => {
+    if (!token) {
+      navigate("/signup");
+      return;
+    }
+
     const getTodos = async () => {
-      const response = await listTodos(token);
-      setTodos(response.data);
+      await listTodos(token);
     };
 
     getTodos();
-  }, [token]);
+  }, [token, listTodos, navigate]);
+
+  const handleStatusChange = async (id: string, status: boolean) => {
+    try {
+      await updateTodoStatus(token, id, status);
+    } catch (error) {
+      console.error("Erro ao atualizar status do Todo:", error);
+    }
+  };
 
   return (
-    <HomeContainer>
-      <Title content="Minhas tarefas" />
-      {todos.map((todo, id) => (
-        <Todo
-          key={id}
-          content={todo.content}
-          status={todo.done.toString() !== "true" ? "Incompleta" : "Completa"}
-          createdAt={formatDistanceToNow(new Date(todo.createdAt), {
-            locale: ptBR,
-          })}
-        />
-      ))}
-    </HomeContainer>
+    <Wrapper>
+      <HomeContainer>
+        <Form onSubmit={handleCreateTodo}>
+          <TodoInput
+            value={newTodoContent}
+            onChange={(event) => setNewTodoContent(event.target.value)}
+            placeholder="Digite sua nova tarefa"
+            required
+          />
+          <TodoButton type="submit">Adicionar</TodoButton>
+        </Form>
+        <Title content="Minhas tarefas" />
+        {todos.map((todo, id) => (
+          <Todo
+            status={todo.done ?? false}
+            id={todo.id}
+            key={id}
+            content={todo.content}
+            createdAt={formatDistanceToNow(new Date(todo.createdAt), {
+              locale: ptBR,
+            })}
+            onStatusChange={handleStatusChange}
+          />
+        ))}
+      </HomeContainer>
+    </Wrapper>
   );
 };
